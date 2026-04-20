@@ -5,31 +5,51 @@ allprojects {
     }
 }
 
-// Workaround: Flutter Gradle Plugin escapes spaces in Windows paths.
-// Use Windows 8.3 short path to avoid the issue.
-fun getShortPath(path: java.io.File): java.io.File {
-    if (!System.getProperty("os.name").lowercase().contains("windows")) return path
-    if (!path.absolutePath.contains(" ")) return path
-    try {
-        val process = Runtime.getRuntime().exec(
-            arrayOf("cmd", "/c", "for %I in (\"${path.absolutePath}\") do @echo %~sI")
-        )
-        val result = process.inputStream.bufferedReader().readText().trim()
-        process.waitFor()
-        if (result.isNotEmpty() && !result.contains(" ")) {
-            return java.io.File(result)
+// =============================================================================
+// PERMANENT FIX: Flutter Gradle Plugin spaces-in-path bug (Windows)
+// The plugin escapes spaces as "\ " (Unix-style) which fails on Windows.
+// Solution: redirect build output to a drive-root path (no spaces),
+// then copy APK back to the expected location for Flutter CLI.
+// =============================================================================
+val projectPath = rootProject.projectDir.absolutePath
+val hasSpacesInPath = projectPath.contains(" ")
+
+if (hasSpacesInPath) {
+    val driveRoot = projectPath.substring(0, 3)
+    val safeBuildDir = File(driveRoot, ".flutter_builds/al_quran")
+    rootProject.layout.buildDirectory.set(safeBuildDir)
+    subprojects {
+        project.layout.buildDirectory.set(File(safeBuildDir, project.name))
+    }
+}
+
+// After assembleDebug/Release, copy APK to where Flutter CLI expects it
+if (hasSpacesInPath) {
+    gradle.projectsEvaluated {
+        val appProject = subprojects.find { it.name == "app" }
+        appProject?.tasks?.configureEach {
+            if (name.startsWith("assemble")) {
+                doLast {
+                    val actualApkDir = File(
+                        project.layout.buildDirectory.get().asFile,
+                        "outputs/flutter-apk"
+                    )
+                    val expectedApkDir = File(
+                        rootProject.projectDir.resolve("..").canonicalFile,
+                        "build/app/outputs/flutter-apk"
+                    )
+                    if (actualApkDir.exists() && actualApkDir.absolutePath != expectedApkDir.absolutePath) {
+                        expectedApkDir.mkdirs()
+                        actualApkDir.listFiles()?.filter { it.extension == "apk" }?.forEach {
+                            it.copyTo(File(expectedApkDir, it.name), overwrite = true)
+                        }
+                    }
+                }
+            }
         }
-    } catch (_: Exception) {}
-    return path
+    }
 }
 
-val projectRoot = getShortPath(rootProject.projectDir.resolve("..").canonicalFile)
-val newBuildDir = java.io.File(projectRoot, "build")
-rootProject.layout.buildDirectory.set(newBuildDir)
-
-subprojects {
-    project.layout.buildDirectory.set(java.io.File(newBuildDir, project.name))
-}
 subprojects {
     project.evaluationDependsOn(":app")
 }

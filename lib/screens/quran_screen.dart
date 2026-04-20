@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'dart:async';
 import '../model/surah_model.dart';
 import '../services/api_service.dart';
@@ -479,9 +480,9 @@ class _SurahTile extends StatelessWidget {
               ),
               Text(
                 surah.nama,
-                style: TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
+                style: GoogleFonts.amiri(
+                  fontSize: 24,
+                  fontWeight: FontWeight.w700,
                   color: theme.colorScheme.primary,
                 ),
               ),

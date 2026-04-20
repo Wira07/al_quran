@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
   static const Color primaryRed = Color(0xFF9B1B30);
@@ -10,89 +11,108 @@ class AppTheme {
   static const Color darkSurface = Color(0xFF161B22);
   static const Color darkCard = Color(0xFF1C2128);
 
-  static ThemeData get lightTheme => ThemeData(
-    useMaterial3: true,
-    brightness: Brightness.light,
-    colorScheme: ColorScheme.light(
-      primary: primaryRed,
-      onPrimary: Colors.white,
-      secondary: accentGold,
-      onSecondary: Colors.white,
-      surface: Colors.white,
-      onSurface: const Color(0xFF1A1A1A),
-    ),
-    scaffoldBackgroundColor: creamBg,
-    appBarTheme: const AppBarTheme(
-      backgroundColor: primaryRed,
-      foregroundColor: Colors.white,
-      elevation: 0,
-      centerTitle: true,
-      titleTextStyle: TextStyle(
-        fontSize: 20,
-        fontWeight: FontWeight.w600,
-        color: Colors.white,
-      ),
-    ),
-    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-      backgroundColor: Colors.white,
-      selectedItemColor: primaryRed,
-      unselectedItemColor: Color(0xFF9E9E9E),
-      type: BottomNavigationBarType.fixed,
-      elevation: 12,
-      selectedLabelStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
-      unselectedLabelStyle: TextStyle(fontSize: 11),
-    ),
-    cardTheme: CardThemeData(
-      color: Colors.white,
-      elevation: 1,
-      shadowColor: Colors.black12,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-    ),
-    dividerColor: Colors.grey.shade200,
-  );
+  static TextTheme _jakartaTextTheme(TextTheme base) {
+    return GoogleFonts.plusJakartaSansTextTheme(base);
+  }
 
-  static ThemeData get darkTheme => ThemeData(
-    useMaterial3: true,
-    brightness: Brightness.dark,
-    colorScheme: ColorScheme.dark(
-      primary: primaryRedLight,
-      onPrimary: Colors.white,
-      secondary: accentGold,
-      onSecondary: Colors.black,
-      surface: darkSurface,
-      onSurface: const Color(0xFFE6E6E6),
-    ),
-    scaffoldBackgroundColor: darkBg,
-    appBarTheme: AppBarTheme(
-      backgroundColor: darkSurface,
-      foregroundColor: Colors.white,
-      elevation: 0,
-      centerTitle: true,
-      titleTextStyle: const TextStyle(
-        fontSize: 20,
-        fontWeight: FontWeight.w600,
+  static ThemeData get lightTheme {
+    final base = ThemeData(
+      useMaterial3: true,
+      brightness: Brightness.light,
+      colorScheme: ColorScheme.light(
+        primary: primaryRed,
+        onPrimary: Colors.white,
+        secondary: accentGold,
+        onSecondary: Colors.white,
+        surface: Colors.white,
+        onSurface: const Color(0xFF1A1A1A),
+      ),
+      scaffoldBackgroundColor: creamBg,
+    );
+    return base.copyWith(
+      textTheme: _jakartaTextTheme(base.textTheme),
+      primaryTextTheme: _jakartaTextTheme(base.primaryTextTheme),
+      appBarTheme: AppBarTheme(
+        backgroundColor: primaryRed,
+        foregroundColor: Colors.white,
+        elevation: 0,
+        centerTitle: true,
+        titleTextStyle: GoogleFonts.plusJakartaSans(
+          fontSize: 20,
+          fontWeight: FontWeight.w600,
+          color: Colors.white,
+        ),
+      ),
+      bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        backgroundColor: Colors.white,
+        selectedItemColor: primaryRed,
+        unselectedItemColor: const Color(0xFF9E9E9E),
+        type: BottomNavigationBarType.fixed,
+        elevation: 12,
+        selectedLabelStyle: GoogleFonts.plusJakartaSans(
+          fontSize: 12,
+          fontWeight: FontWeight.w600,
+        ),
+        unselectedLabelStyle: GoogleFonts.plusJakartaSans(fontSize: 11),
+      ),
+      cardTheme: CardThemeData(
         color: Colors.white,
+        elevation: 1,
+        shadowColor: Colors.black12,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
       ),
-    ),
-    bottomNavigationBarTheme: BottomNavigationBarThemeData(
-      backgroundColor: darkSurface,
-      selectedItemColor: primaryRedLight,
-      unselectedItemColor: Colors.grey.shade600,
-      type: BottomNavigationBarType.fixed,
-      elevation: 12,
-      selectedLabelStyle: const TextStyle(
-        fontSize: 12,
-        fontWeight: FontWeight.w600,
+      dividerColor: Colors.grey.shade200,
+    );
+  }
+
+  static ThemeData get darkTheme {
+    final base = ThemeData(
+      useMaterial3: true,
+      brightness: Brightness.dark,
+      colorScheme: ColorScheme.dark(
+        primary: primaryRedLight,
+        onPrimary: Colors.white,
+        secondary: accentGold,
+        onSecondary: Colors.black,
+        surface: darkSurface,
+        onSurface: const Color(0xFFE6E6E6),
       ),
-      unselectedLabelStyle: const TextStyle(fontSize: 11),
-    ),
-    cardTheme: CardThemeData(
-      color: darkCard,
-      elevation: 0,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-    ),
-    dividerColor: Colors.grey.shade800,
-  );
+      scaffoldBackgroundColor: darkBg,
+    );
+    return base.copyWith(
+      textTheme: _jakartaTextTheme(base.textTheme),
+      primaryTextTheme: _jakartaTextTheme(base.primaryTextTheme),
+      appBarTheme: AppBarTheme(
+        backgroundColor: darkSurface,
+        foregroundColor: Colors.white,
+        elevation: 0,
+        centerTitle: true,
+        titleTextStyle: GoogleFonts.plusJakartaSans(
+          fontSize: 20,
+          fontWeight: FontWeight.w600,
+          color: Colors.white,
+        ),
+      ),
+      bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        backgroundColor: darkSurface,
+        selectedItemColor: primaryRedLight,
+        unselectedItemColor: Colors.grey.shade600,
+        type: BottomNavigationBarType.fixed,
+        elevation: 12,
+        selectedLabelStyle: GoogleFonts.plusJakartaSans(
+          fontSize: 12,
+          fontWeight: FontWeight.w600,
+        ),
+        unselectedLabelStyle: GoogleFonts.plusJakartaSans(fontSize: 11),
+      ),
+      cardTheme: CardThemeData(
+        color: darkCard,
+        elevation: 0,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+      ),
+      dividerColor: Colors.grey.shade800,
+    );
+  }
 }

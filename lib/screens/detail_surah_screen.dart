@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../model/ayat_model.dart';
 import '../services/api_service.dart';
 import 'package:audioplayers/audioplayers.dart';
@@ -230,10 +231,10 @@ class _DetailSurahScreenState extends State<DetailSurahScreen> {
                   ayat.teksArab,
                   textAlign: TextAlign.right,
                   textDirection: TextDirection.rtl,
-                  style: TextStyle(
-                    fontSize: 26,
-                    fontWeight: FontWeight.w500,
-                    height: 2.0,
+                  style: GoogleFonts.amiri(
+                    fontSize: 28,
+                    fontWeight: FontWeight.w700,
+                    height: 2.2,
                     color: theme.colorScheme.onSurface,
                   ),
                 ),
@@ -344,11 +345,11 @@ class _DetailSurahScreenState extends State<DetailSurahScreen> {
                 textDirection: TextDirection.rtl,
                 textAlign: TextAlign.center,
                 text: TextSpan(
-                  style: TextStyle(
-                    fontSize: 28,
-                    height: 2.4,
+                  style: GoogleFonts.amiri(
+                    fontSize: 30,
+                    fontWeight: FontWeight.w700,
+                    height: 2.6,
                     color: theme.colorScheme.onSurface,
-                    letterSpacing: 0.5,
                   ),
                   children: ayatList.map((ayat) {
                     return TextSpan(
